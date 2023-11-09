@@ -42,10 +42,18 @@ class Solution {
             answer.add(cur);
             return;
         }
-        for (int neighbor : graph.getOrDefault(cur, new ArrayList<>())) {
-            if (!visited.contains(neighbor)) {
+        for (int neighbor : graph.getOrDefault(cur, new ArrayList<>())) { // retrieves arrayList value from int key 'cur'
+            // If not arrraylist val present, then generate new list. If arrayList does exist, then loop through its
+            // elements of type int 'neighbor'. A 'full' arraylist will contain 3 ints, since an arraylist edge was
+            // generated when adding a parent edge, then retrieved 2 more times when adding a edges with children
+            // leaves will only have one edge (one element in array list) and the OG root will have 2 elements max,
+            // assuminng R and L branches both exist
+            if (!visited.contains(neighbor)) { // this prevents loop of looping neighbor of a parent node, then going to
+                // first child and then looping child arraylist back to parent etc. only DFS if node not visited
                 visited.add(neighbor);
-                dfs(neighbor, distance + 1, k);
+                dfs(neighbor, distance + 1, k); // distance value passed with each method  so for a parent
+                // with say dist at 1 from target with k = 2, and parent has 2 child nodes, both of which are valid paths
+                // distance of 1+1 is passed to both recursive calls with child nodes to add both to return collecion
             }
         }
     }
